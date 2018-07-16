@@ -40,6 +40,8 @@ onDismiss(id){
   const updatedList = this.state.list.filter(isNotId);
   this.setState({list: updatedList});
 
+
+
   //ES6 on ROIDS!
   //Or: const updatedList = this.state.list.filter(item => item.objectID !== id);
        
@@ -54,6 +56,19 @@ onDismiss(id){
   const updatedList =this.state.list.filter(isNotId);
 */
 }
+
+/* An Update Method
+
+onUpdate = () =>{
+
+  const itemId = item => item.objectID;
+  const getId = this.state.list.filter(itemId);
+  
+
+  console.log(getID);
+}
+
+*/
 
   render() {
     return (
@@ -72,6 +87,11 @@ onDismiss(id){
               type="button"
               >
               Dismiss
+              </button>
+
+              <button onClick={this.onUpdate}
+              type="button">
+              Update 
               </button>
             </span>
           </div>
