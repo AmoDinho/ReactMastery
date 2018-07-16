@@ -1,2 +1,0 @@
-# ReactMastery
-Created with CodeSandbox
