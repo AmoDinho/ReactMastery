@@ -1,8 +1,7 @@
 {
   "name": "mastering-react",
   "version": "1.0.0",
-  "description":
-    "This code is an accompaniment to  the tuts in \"the road to learn React\" book/",
+  "description": "This code is an accompaniment to  the tuts in \"the road to learn React\" book/",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
