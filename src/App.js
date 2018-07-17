@@ -2,30 +2,12 @@ import React, { Component } from "react";
 import "./App.css";
 
 
+const DEFAULT_QUERY = 'redux';
 
 
-const list = [
-  {
-    title: "React",
-    url: "https://facebook.github.io/react/",
-    author: "Adolf Van Coller",
-    num_comments: 3,
-    points: 4,
-    objectID: 0
-  },
-  {
-    title: "Redux",
-    url: "https://github.com/reactjs/redux",
-    author: "Dan Abramov",
-    num_comments: 4,
-    points: 7,
-    objectID: 1
-  }
-];
-
-const isSearched= searchTerm => item =>
-   item.title.toLowerCase().includes(searchTerm.toLowerCase());
-
+const PATH_BASE ='https://hn.algolia.com/api/v1';
+const PATH_SEARCH = '/search';
+const PARM_SEARCH = 'query=';
 
 
 class App extends Component {
@@ -33,12 +15,30 @@ constructor(props){
   super(props);
 
   this.state = {
-    list,
-    searchTerm: '',
+    result: null,
+    searchTerm: DEFAULT_QUERY,
   };
 
+  this.setSearchTopStories = this.setSearchTopStories.bind(this);
   this.onSearchChange = this.onSearchChange.bind(this);
   this.onDismiss = this.onDismiss.bind(this);
+}
+
+setSearchTopStories(result){
+  this.setState({result});
+}
+
+
+componentDidMount(){
+  const { searchTerm} = this.state;
+const url =`${PATH_BASE}${PATH_SEARCH}?${PARM_SEARCH}${searchTerm}`;
+
+  fetch(url)
+   .then(response => response.json())
+   .then(result => this.setSearchTopStories(result))
+   .catch(error => error);
+
+   
 }
 
 onSearchChange(event){
@@ -48,41 +48,19 @@ onSearchChange(event){
 onDismiss(id){
 
   const isNotId = item => item.objectID !== id;
-  const updatedList = this.state.list.filter(isNotId);
-  this.setState({list: updatedList});
+  const updatedhits = this.state.result.hits.filter(isNotId);
+  this.setState({
+    result: { ...this.state.result, hits:updatedhits}
+  });
 
-
-
-  //ES6 on ROIDS!
-  //Or: const updatedList = this.state.list.filter(item => item.objectID !== id);
-       
-  /*
-
-  ES5 Computed: 
-
-  function isNotId(item){
-    return item.objectID !== id;
-  }
-
-  const updatedList =this.state.list.filter(isNotId);
-*/
 }
-
-/* An Update Method
-
-onUpdate = () =>{
-
-  const itemId = item => item.objectID;
-  const getId = this.state.list.filter(itemId);
-  
-
-  console.log(getID);
-}
-
-*/
 
   render() {
-    const {searchTerm, list} = this.state;
+
+    const {searchTerm, result} = this.state;
+    console.log(this.state);
+    if(!result){return null;}
+
     return (
       <div className="page">
      <div className="interactions">
@@ -94,11 +72,17 @@ onUpdate = () =>{
          Search
          </Search>
          </div>
-        <Table
-        list={list}
-        pattern={searchTerm}
-        onDismiss={this.onDismiss} 
-        />
+          {
+            result && <Table
+            list={result.hits}
+            pattern={searchTerm}
+            onDismiss={this.onDismiss} 
+            />
+            
+          }
+
+        
+        
     
       </div>
     );
@@ -117,6 +101,7 @@ const Search =({value, onChange,children}) =>
 const Table = ({list, pattern, onDismiss}) =>
 <div className="table">
 
+{/*
  {list.filter(isSearched(pattern)).map(item => 
           <div key={item.objectID} className="table-row">
             <span style={{width: '40%'}}>
@@ -140,6 +125,8 @@ const Table = ({list, pattern, onDismiss}) =>
         )
         
         }
+
+        */}
         
 </div>
 
