@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import axios from 'axios';
 
 
 //const DEFAULT_QUERY = 'github';
@@ -13,6 +14,9 @@ const PARM_PAGE = 'page=';
 const PARM_HPP = 'hitsPerPage=';
 
 class App extends Component {
+
+  _isMounted = false;
+
 constructor(props){
   super(props);
 
@@ -20,6 +24,7 @@ constructor(props){
     results: null,
     searchKey: '',
     searchTerm: '',
+    error: null,
   };
 
   this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -58,18 +63,23 @@ setSearchTopStories(result){
 }
 
 fetchSearchTopStories(searchTerm, page = 0){
-  fetch(`${PATH_BASE}${PATH_SEARCH}?${PARM_SEARCH}${searchTerm}&${PARM_PAGE}${page}&${PARM_HPP}${DEFAULT_HPP}`)
-   .then(response => response.json())
-   .then(result => this.setSearchTopStories(result))
-   .catch(error => error);
+  axios(`${PATH_BASE}${PATH_SEARCH}?${PARM_SEARCH}${searchTerm}&${PARM_PAGE}${page}&${PARM_HPP}${DEFAULT_HPP}`)
+   .then(result => this._isMounted && this.setSearchTopStories(result.data))
+   .catch(error => this._isMounted && this.setState({ error }));
 }
 
 
 componentDidMount(){
+  this._isMounted = true;
+
   const { searchTerm} = this.state;
   this.setState({searchKey:searchTerm});
   this.fetchSearchTopStories(searchTerm);
    
+}
+
+componentWillUnmount(){
+  this._isMounted = false;
 }
 
 onSearchSubmit(event){
@@ -107,7 +117,8 @@ onDismiss(id){
     const {
       searchTerm,
        results,
-       searchKey
+       searchKey,
+       error
       } = this.state;
 
     const page = (
@@ -127,7 +138,11 @@ onDismiss(id){
 
 
     console.log(this.state);
-    if(!results){return null;}
+    //if(!results){return null;}
+
+    if(error){
+      return <p>Something Went Wrong</p>;
+    }
 
     return (
       <div className="page">
@@ -227,3 +242,9 @@ const Table = ({list, onDismiss}) =>
   }
 
 export default App;
+
+export {
+  Button,
+  Search,
+  Table
+};

@@ -9,7 +9,12 @@
     "react-dom": "16.3.2",
     "react-scripts": "1.1.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-render": "^1.1.1",
+    "react-test-renderer": "^16.4.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
