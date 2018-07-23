@@ -8,7 +8,7 @@
 
 ### To Do
 - [ ] Create Unit Test for Button component
-- [ ]
+- [ ] Define proptype for search component
 
 ### Different PropTypes
 
@@ -20,3 +20,4 @@
 • PropTypes.string
 • PropTypes.node
 • PropTypes.element
+
