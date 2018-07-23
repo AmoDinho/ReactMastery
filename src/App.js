@@ -25,6 +25,7 @@ constructor(props){
     searchKey: '',
     searchTerm: DEFAULT_QUERY,
     error: null,
+    isLoading: false,
   };
 
   this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -58,11 +59,13 @@ setSearchTopStories(result){
     results: {
       ...results,
       [searchKey]:{hits: updatedhits, page}
-    }
+    },
+    isLoading: false
   });
 }
 
 fetchSearchTopStories(searchTerm, page = 0){
+  this.setState({isLoading: true});
   axios(`${PATH_BASE}${PATH_SEARCH}?${PARM_SEARCH}${searchTerm}&${PARM_PAGE}${page}&${PARM_HPP}${DEFAULT_HPP}`)
    .then(result => this._isMounted && this.setSearchTopStories(result.data))
    .catch(error => this._isMounted && this.setState({ error }));
@@ -118,7 +121,8 @@ onDismiss(id){
       searchTerm,
        results,
        searchKey,
-       error
+       error,
+       isLoading
       } = this.state;
 
     const page = (
@@ -148,6 +152,7 @@ onDismiss(id){
       <div className="page">
      <div className="interactions">
       
+    
         <Search 
         value={searchTerm}
         onChange={this.onSearchChange}
@@ -165,10 +170,14 @@ onDismiss(id){
           
 
         <div className="interactions">
-        <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
-          More
-          </Button>
-    
+        {
+        isLoading 
+        ? <Loading/>
+        : <Button
+           onClick={() => this.fetchSearchTopStories(searchKey, page +1)}>
+           More
+           </Button>
+      }
         </div>
         
     
@@ -177,17 +186,39 @@ onDismiss(id){
   }
 }
 
-const Search =({value, onChange,onSubmit,children}) =>
-<form>
-    {children} <input 
+class Search extends Component{
+
+  componentDidMount(){
+    if(this.input){
+      this.input.focus();
+    }
+  }
+
+  render(){
+    const{
+      value,
+      onChange,
+      onSubmit,
+      children
+    } = this.props;
+
+    return(
+      
+<form onSubmit={onSubmit}>
+   <input 
     type="text" 
      onChange={onChange}
     value={value}
+    ref={(node) => {this.input = node;}}
         />
         <button type="submit">
         {children}
         </button>
       </form>
+    );
+  }
+}
+
 
 const Table = ({list, onDismiss}) =>
 <div className="table">
@@ -258,6 +289,10 @@ Table.PropTypes = {
         Button.defaultProps = {
           className: '',
         };
+
+
+const Loading = () =>
+<div>Loading...</div>
   
 export default App;
 
