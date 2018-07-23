@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-
-//const DEFAULT_QUERY = 'github';
+const DEFAULT_QUERY = 'github';
 const DEFAULT_HPP = '100';
 
 
@@ -23,7 +23,7 @@ constructor(props){
   this.state = {
     results: null,
     searchKey: '',
-    searchTerm: '',
+    searchTerm: DEFAULT_QUERY,
     error: null,
   };
 
@@ -221,26 +221,44 @@ const Table = ({list, onDismiss}) =>
         
 </div>
 
+Table.PropTypes = {
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      objectID: PropTypes.string.isRequired,
+      author: PropTypes.string,
+      url: PropTypes.string,
+      num_comments: PropTypes.number,
+      points: PropTypes.number,
+    })
+  ).isRequired,
+  onDismiss: PropTypes.func.isRequired,
+};
 
-  class Button extends Component{
-    render(){
-      const {
+  const Button = ({
+      
         onClick,
         className='',
         children,
-      } = this.props;
+      }) =>
 
-      return(
+      
         <button 
         onClick={onClick}
         className={className}
         type="button">
         {children}
         </button>
-      );
-    }
-  }
 
+        Button.PropTypes = {
+         onClick: PropTypes.func.isRequired,
+         className: PropTypes.string,
+         children: PropTypes.node.isRequired,
+        };
+
+        Button.defaultProps = {
+          className: '',
+        };
+  
 export default App;
 
 export {

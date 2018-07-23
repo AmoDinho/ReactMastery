@@ -1,16 +1,22 @@
 # The road to React Mastery
 
 
-## Challenges
+##HOW TO RUN A TEST
 
 
+```npm test```
 
-### Chapter 3
+### To Do
+- [ ] Create Unit Test for Button component
+- [ ]
 
-- [ ] Implement a data structure muniplutation algo on the current state: ie Rank alphabetically/Reshuffle letters
+### Different PropTypes
 
-
-## To-Do
-
-- [ ] Add Your own implementation of anyy API
-- [ ] 
+• PropTypes.array
+• PropTypes.bool
+• PropTypes.func
+• PropTypes.number
+• PropTypes.object
+• PropTypes.string
+• PropTypes.node
+• PropTypes.element
