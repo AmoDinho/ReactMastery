@@ -12,8 +12,10 @@
   },
   "devDependencies": {
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "lodash": "^4.17.10",
     "react-addons-test-utils": "^15.6.2",
     "react-test-render": "^1.1.1",
     "react-test-renderer": "^16.4.1"
