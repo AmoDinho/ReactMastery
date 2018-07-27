@@ -27,6 +27,30 @@ const SORTS = {
   POINTS: list => sortBy(list, 'points').reverse(),
 };
 
+
+const updateSearchTopStoriesState = (hits, page) => (prevState) => {
+  const {searchKey, results} = prevState;
+
+  const oldHits = results && results[searchKey]
+    ? results[searchKey].hits
+    : [];
+
+  const updatedhits = [
+    ...oldHits,
+    ...hits
+  ];
+
+  return{
+    results: {
+      ...results,
+      [searchKey]:{hits: updatedhits, page}
+    },
+    isLoading: false
+  };
+  
+};
+
+
 class App extends Component {
 
   _isMounted = false;
@@ -40,6 +64,7 @@ constructor(props){
     searchTerm: DEFAULT_QUERY,
     error: null,
     isLoading: false,
+    isSortReverse: false,
     
   };
 
@@ -57,32 +82,19 @@ needsToSearchTopStories(searchTerm){
 }
 
 
+
+
 setSearchTopStories(result){
   const {hits, page} = result;
-  const {searchKey, results} =this.state;
 
-  const oldHits =results && results[searchKey]
-    ? results[searchKey].hits
-    : [];
-
-  const updatedhits = [
-    ...oldHits,
-    ...hits
-  ];
-
-  this.setState({
-    results: {
-      ...results,
-      [searchKey]:{hits: updatedhits, page}
-    },
-    isLoading: false
-  });
+  this.setState(updateSearchTopStoriesState(hits,page));
+ 
 }
 
 fetchSearchTopStories(searchTerm, page = 0){
   this.setState({isLoading: true});
   axios(`${PATH_BASE}${PATH_SEARCH}?${PARM_SEARCH}${searchTerm}&${PARM_PAGE}${page}&${PARM_HPP}${DEFAULT_HPP}`)
-   .then(result => this._isMounted && this.setSearchTopStories(result.data))
+   .then(result => this.setSearchTopStories(result.data))
    .catch(error => this._isMounted && this.setState({ error }));
 }
 
@@ -357,7 +369,7 @@ sortKey
 
 
 
-Table.PropTypes = {
+Table.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       objectID: PropTypes.string.isRequired,
@@ -385,7 +397,7 @@ Table.PropTypes = {
         {children}
         </button>
 
-        Button.PropTypes = {
+        Button.propTypes = {
          onClick: PropTypes.func.isRequired,
          className: PropTypes.string,
          children: PropTypes.node.isRequired,
