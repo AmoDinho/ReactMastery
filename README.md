@@ -41,5 +41,5 @@ Need write up the basic concepts around React:
 
 ## To-Do
 
-- [ ] 
+- [ ] Write your own map function that cycles through dummy data
 - [ ] 

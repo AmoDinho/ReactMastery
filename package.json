@@ -1,8 +1,7 @@
 {
   "name": "mastering-react",
   "version": "1.0.0",
-  "description":
-    "This code is an accompaniment to  the tuts in \"the road to learn React\" book/",
+  "description": "This code is an accompaniment to  the tuts in \"the road to learn React\" book/",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
@@ -10,7 +9,9 @@
     "react-dom": "16.3.2",
     "react-scripts": "1.1.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.2.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
