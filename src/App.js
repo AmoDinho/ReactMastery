@@ -30,16 +30,19 @@ constructor(props){
   this.onDismiss = this.onDismiss.bind(this);
 }
 
-
+//This prevents the API request when a result is available in cache
 needsToSearchTopStories(searchTerm){
   return !this.state.results[searchTerm];
 }
 
-
+//This method is for caching. Because we don't want to make
+//a round trip for the same search term
 setSearchTopStories(result){
   const {hits, page} = result;
   const {searchKey, results} =this.state;
 
+
+  //We are check if there are old hits first
   const oldHits =results && results[searchKey]
     ? results[searchKey].hits
     : [];
